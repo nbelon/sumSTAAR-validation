@@ -1,4 +1,4 @@
-### a script used to generate Figures S2, S3
+### a script used to generate Figures S3, S4
 # Nadezhda Belonogova, Irina Zorkoltseva 2022
 
 ##### STAAR null model
