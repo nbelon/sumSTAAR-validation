@@ -1,10 +1,10 @@
-### a script used to generate the data for Table S1
+### a script used to generate the data for Table S1 and Figure S6
 # Nadezhda Belonogova, 2022
 
 library(sumFREGAT)
 library(data.table)
 
-df <- fread('../sumstats_neuro_sum_ctg_format.txt.gz', h = T, data.table = F) # neuroticism summary statistics from https://ctg.cncr.nl/software/summary_statistics
+df <- fread('../../sumstats_neuro_sum_ctg_format.txt.gz', h = T, data.table = F) # neuroticism summary statistics from https://ctg.cncr.nl/software/summary_statistics
 df <- df[, c('CHR', 'POS', 'SNP', 'A1', 'P', 'BETA', 'EAF')]
 colnames(df)[3:4] <- c('ID', 'EA')
 fwrite(df, '4prep.txt', row = F, qu = F, sep = ' ', na = 'NA')
@@ -355,3 +355,47 @@ out <- df[, c('gene', 'sumSTAAR.STAAR_O', 'sumSTAAR.ACAT_O', 'PCAanno', 'SKATann
 v <- sapply(1:dim(out)[1], function(x) any(out[x, 2:dim(out)[2]] <= 2.5e-5, na.rm = T))
 write.table(out[v, ], file = 'favor2.exon.2.5e-5.csv', sep = ';', row = F, qu = F) # data for Table S1
 
+
+################ Figure S6: qqplots
+
+ylb <- expression(paste(-log[10], "(observed P)"))
+xlb <- expression(paste(-log[10], "(expected P)"))
+
+draw.qq <- function(pval, main) {
+
+	chi <- qchisq((1 - pval), 1)
+	lam <- median(chi)/qchisq(0.5, 1)
+
+	pval <- -log10(pval)
+
+	n <- length(pval)
+	a <- 1:n
+	b <- a/n
+	x <- -log10(b)
+
+	upper <- qbeta(0.025, a, rev(a))
+	lower <- qbeta(0.975, a, rev(a))
+
+	plot(x, pval, type = "n", ylab = ylb, xlab = xlb, ylim = c(0, ceiling(max(pval))), main = main)
+	# upper and lower have already been subset
+	polygon(-log10(c(b, rev(b))), -log10(c(upper, rev(lower))), density=NA, col="gray80")
+	points(x, pval, pch = 19, col = 'black')
+	abline(0, 1)
+	legend('topleft', legend = paste0('Lambda = ', round(lam, 3)), pch = 19, bty = "n")#, cex = .9)
+
+}
+
+tiff('Fig.S6.tif', units = "in", width = 5.5, height= 11, res = 600, compression = 'lzw')
+
+par(mfrow = c(4, 2))
+
+draw.qq(sort(out$sumSTAAR.STAAR_O), 'sumSTAAR, annotation included') ## sort() removes NAs
+draw.qq(sort(out$sumSTAAR.ACAT_O), 'sumSTAAR, without annotation')
+draw.qq(sort(out$PCAanno), 'PCA')
+draw.qq(sort(out$BTanno), 'BT')
+draw.qq(sort(out$SKATanno), 'SKAT')
+draw.qq(sort(out$ACATanno), 'ACAT-V')
+draw.qq(sort(out$anno11), 'Weighting function parameters (1, 1)')
+draw.qq(sort(out$anno125), 'Weighting function parameters (1, 25)')
+
+dev.off()
