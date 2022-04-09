@@ -4,5 +4,5 @@ This repository contains the R scripts that were used to generate data, figures 
 Figure 2: threshold.selection.neuroticism.R<br/>
 Figure 3: runtime.neuroticism.R<br/>
 Figure S2: sumSTAAR.vs.STAAR.R<br/>
-Figures S3, S4: CAD.R<br/>
-Table S1: favor.neuroticism.R<br/>
+Figures S3, S4, S5: CAD.R<br/>
+Table S1, Figure S6: favor.neuroticism.R<br/>
