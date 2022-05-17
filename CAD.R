@@ -1,4 +1,4 @@
-### a script used to generate Figures S3, S4, S5
+### a script used to generate Figures S3, S4
 # Nadezhda Belonogova, Irina Zorkoltseva 2022
 
 ##### STAAR null model
@@ -58,7 +58,7 @@ total <- cbind(map,ind.pval)
 print('write total result to file ind.staar.chr01.txt')
 write.table(total, file = 'ind.pval.all.staar.chr01.txt', row.names = F, qu = F,sep=' ')
 
-####### Figure S3: fastGWA vs STAAR individual scores
+####### Figure: fastGWA vs STAAR individual scores
 
 staar <- read.table('/home/lima/Zor/SUM_STATISTICS/sumSTAAR/staar/chr01/ind.pval.all.staar.chr01.txt', h = T)
  fast <- read.table('/home/lima/Zor/SUM_STATISTICS/sumSTAAR/staar/chr01/fast4gb_mac5.maf_0.01.txt', h = T)
@@ -74,8 +74,8 @@ staar$p.staar <- 2*pnorm(abs(staar$zt),low=F)
 df <- merge(staar, fast, by = 'SNP')
 #105310 SNPs
 
-#pdf('Fig.S3.pdf')
-tiff('Fig.S3.tif', units="in", width=5, height=5.5, res=600, compression = 'lzw')
+#pdf('Fig.pdf')
+tiff('Fig.tif', units="in", width=5, height=5.5, res=600, compression = 'lzw')
 
 x <- -log10(df[, 'p.staar'])
 y <- -log10(df[, 'p.fastT'])
@@ -173,7 +173,7 @@ for (i in 1:dim(gens)[1]) {
 }
 
 
-###### draw Figure S4: STAAR vs sumSTAAR on real data
+###### draw Figure S3: STAAR vs sumSTAAR on real data
 
 df1 <- read.table('gb.staar.allmeas.out')
 colnames(df1) <- c('gene', 'nvar', 'STAAR.STAAR_O', 'STAAR.ACAT_O', 'STAAR.S11', 'STAAR.S125', 'STAAR.B11', 'STAAR.B125', 'STAAR.A11', 'STAAR.A125')
@@ -189,8 +189,8 @@ sum(res0$nvar)
 res0$gene <- NULL
 res0 <- as.matrix(res0)
 
-#pdf('Fig.S4.pdf', height = 7.5)
-tiff('Fig.S4.tif', units="in", width=7, height=7.5, res=600, compression = 'lzw')
+#pdf('Fig.S3.pdf', height = 7.5)
+tiff('Fig.S3.tif', units="in", width=7, height=7.5, res=600, compression = 'lzw')
 
 par(mfrow = c(2, 2))
 
@@ -278,7 +278,7 @@ cor <- cor(p1[!is.na(p2)],p2[!is.na(p2)])
 cor
 #[1] 0.9985428
 
-################ Figure S5: qqplots
+################ Figure S4: qqplots
 
 df1 <- read.table('gb.staar.allmeas.out')
 colnames(df1) <- c('gene', 'nvar', 'STAAR.STAAR_O', 'STAAR.ACAT_O', 'STAAR.S11', 'STAAR.S125', 'STAAR.B11', 'STAAR.B125', 'STAAR.A11', 'STAAR.A125')
@@ -325,8 +325,8 @@ draw.qq <- function(pval0, pval1, main) {
 
 }
 
-#pdf('Fig.S5.pdf', height = 7.5)
-tiff('Fig.S5.tif', units="in", width=7, height=7.5, res=600, compression = 'lzw')
+#pdf('Fig.S4.pdf', height = 7.5)
+tiff('Fig.S4.tif', units="in", width=7, height=7.5, res=600, compression = 'lzw')
 
 par(mfrow = c(2, 2))
 
