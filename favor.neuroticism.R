@@ -1,4 +1,4 @@
-### a script used to generate the data for Table S1 and Figure S6
+### a script used to generate the data for Table S1 and Figure S5
 # Nadezhda Belonogova, 2022
 
 library(sumFREGAT)
@@ -356,7 +356,7 @@ v <- sapply(1:dim(out)[1], function(x) any(out[x, 2:dim(out)[2]] <= 2.5e-5, na.r
 write.table(out[v, ], file = 'favor2.exon.2.5e-5.csv', sep = ';', row = F, qu = F) # data for Table S1
 
 
-################ Figure S6: qqplots
+################ Figure S5: qqplots
 
 ylb <- expression(paste(-log[10], "(observed P)"))
 xlb <- expression(paste(-log[10], "(expected P)"))
@@ -385,7 +385,7 @@ draw.qq <- function(pval, main) {
 
 }
 
-tiff('Fig.S6.tif', units = "in", width = 5.5, height= 11, res = 600, compression = 'lzw')
+tiff('Fig.S5.tif', units = "in", width = 5.5, height= 11, res = 600, compression = 'lzw')
 
 par(mfrow = c(4, 2))
 
